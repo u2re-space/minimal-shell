@@ -11,7 +11,7 @@
 
 import { H } from "fest/lure";
 import { affected } from "fest/object";
-import type { ShellId, ShellLayoutConfig, ViewId } from "shells/types";
+import type { ShellId, ShellLayoutConfig, ViewId } from "shared/boot/types";
 
 // @ts-ignore - SCSS import
 import style from "./minimal.scss?inline";
@@ -19,8 +19,8 @@ import style from "./minimal.scss?inline";
 // Side effect: register icon component
 import "fest/icon";
 import { isEnabledView } from "shared/routing/views";
-import type { ShellTheme } from "shells/types";
-import { ShellBase } from "../core/shells";
+import type { ShellTheme } from "shared/boot/types";
+import { ShellBase } from "boot/ts/shells";
 
 // ============================================================================
 // NAVIGATION ITEMS
