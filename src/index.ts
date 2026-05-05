@@ -35,7 +35,8 @@ interface NavItem {
 
 /** Main navigation items shown in the toolbar */
 const ALL_NAV_ITEMS = [
-    { id: "viewer", name: "Viewer", icon: "eye" },
+    /* NOTE: Logical id stays `viewer` (registry → markdown-view); label reflects the UX. */
+    { id: "viewer", name: "Markdown", icon: "eye" },
     { id: "explorer", name: "Explorer", icon: "folder" },
     { id: "workcenter", name: "Work Center", icon: "lightning" },
     { id: "airpad", name: "Airpad", icon: "hand-pointing" },

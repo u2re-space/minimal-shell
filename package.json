@@ -1,13 +1,23 @@
 {
-  "name": "minimal-shell",
-  "version": "1.0.0",
-  "description": "Shell for multiple views",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+    "name": "minimal-shell",
+    "version": "1.0.0",
+    "description": "Minimal toolbar shell (default viewer / markdown-view) over HTTPS :443.",
+    "type": "module",
+    "main": "./src/index.ts",
+    "module": "./src/index.ts",
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "dev": "vite --config vite.config.js",
+        "dev:8443": "VIEW_DEV_PORT=8443 vite --config vite.config.js",
+        "demo": "npm run dev",
+        "ssl:localhost": "mkdir -p certs && openssl req -x509 -newkey rsa:2048 -nodes -keyout certs/key.pem -out certs/cert.pem -days 825 -subj '/CN=localhost'",
+        "build": "vite build --config vite.config.js",
+        "preview": "vite preview --config vite.config.js",
+        "test": "echo \"(no unit tests yet)\""
+    },
+    "keywords": ["shell", "minimal", "crossword", "toolbar"],
+    "author": "",
+    "license": "ISC"
 }

@@ -1,6 +1,8 @@
 /* Minimal shell: layered tokens + nav/content grid, WCO-safe, shadow slot views. */
 
-@layer shell.tokens, shell.base, shell.components, shell.utilities, shell.overrides;
+@use "../../../views/markdown-view/src/scss/viewer-shell-host-theme" as md-shell-host;
+
+@layer shell.tokens, shell.base, shell.components, shell.utilities, shell.markdown-host-theme, shell.overrides;
 
 @layer shell.tokens {
     :where(:root, .app-shell, .app-shell[data-style="minimal"]):has(.app-shell, .app-shell[data-style="minimal"]) {
@@ -33,13 +35,13 @@
         --shell-nav-border: var(--color-outline-variant);
     }
 
-    /* cw-shell-minimal :host — same nav token as toolbar (inherits document --color-* from light DOM) */
-    :host:has(> .app-shell) {
+    /* cw-shell-minimal :host — `.app-shell` is in shadow; use `:host` only. */
+    :host {
         --shell-bg: light-dark(var(--color-surface), var(--color-surface));
         --shell-nav-bg: light-dark(var(--color-surface-container-high), var(--color-surface-container-high));
     }
 
-    :host([data-theme="dark"]):has(> .app-shell) {
+    :host([data-theme="dark"]) {
         --shell-bg: var(--color-surface);
         --shell-nav-bg: var(--color-surface-container-high);
     }
@@ -47,7 +49,7 @@
 
 @layer shell.base {
     /* Match toolbar chrome; avoids host vs .app-shell__nav mismatch when meta/theme updates */
-    :host:has(> .app-shell) {
+    :host {
         background-color: var(--shell-nav-bg);
     }
 
@@ -298,7 +300,8 @@
 
     .app-shell__content {
         container-type: size;
-        contain: strict;
+        /* layout + style: avoid `strict` paint containment fighting view/token repaints after async theme loads */
+        contain: layout style;
         position: relative;
         flex: 1;
         display: flex;
@@ -358,6 +361,18 @@
             min-block-size: 0;
         }
 
+        /*
+         * WHY: Some view hosts override `hidden` or stack absolutely — force inert stacking
+         * so the inactive view cannot intercept scroll/pointer (minimal single-slot shell).
+         */
+        & > [data-view][hidden],
+        slot[name="view"]::slotted([hidden]),
+        slot[name="view"]::slotted([data-view][hidden]) {
+            display: none !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
         & > * {
             flex: 1;
             overflow: auto;
@@ -382,6 +397,12 @@
             background-color: rgba(128, 128, 128, 0.4);
             border-radius: 4px;
         }
+    }
+
+    /* Airpad: single scroll surface inside `.view-cwsp .container` — avoid nested shell scroller. */
+    :host([data-active-view="airpad"]) .app-shell__content {
+        overflow: hidden;
+        overscroll-behavior: none;
     }
 
     .app-shell__status {
@@ -450,6 +471,11 @@
             transform: translate(-50%, 0);
         }
     }
+}
+
+@layer shell.markdown-host-theme {
+    /* WHY: Viewer/markdown theme selectors scoped under `html[…]` do not pierce this shadow root. */
+    @include md-shell-host.markdown-viewer-host-theme-bridge();
 }
 
 @layer shell.overrides {
