@@ -4,16 +4,15 @@
     "compilerOptions": {
         "outDir": "./dist/",
         "paths": {
-            "boot/ts/*": ["../../projects/subsystem/src/boot/*"],
-            "views/types": ["../../views/shared/types.ts"],
-            "views/registry": ["../../views/shared/registry.ts"],
-            "shells/*": ["../../views/shared/views/*"],
-            "core/*": ["../../views/shared/src/*"],
-            "com/*": ["../../views/shared/src/*"],
-            "shared/*": ["../../views/shared/src/*"],
-            "@shared/*": ["../../views/shared/*"],
-            "fonts/*": ["../../views/shared/assets/fonts/*"],
-            "fest/*": ["../../views/shared/fest/*"],
+            "boot/ts/*": ["../../shared/src/boot/*"],
+            "views/*": ["../../shared/views/*"],
+            "shells/*": ["../../shared/shells/*"],
+            "core/*": ["../../shared/src/*"],
+            "com/*": ["../../shared/src/*"],
+            "shared/*": ["../../shared/src/*"],
+            "@shared/*": ["../../shared/*"],
+            "fonts/*": ["../../shared/assets/fonts/*"],
+            "fest/*": ["../../shared/fest/*"],
             "fest/dom": ["../../projects/dom.ts/src/index.ts"],
             "fest/lure": ["../../projects/lur.e/src/index.ts"],
             "fest/object": ["../../projects/object.ts/src/index.ts"],
@@ -27,7 +26,74 @@
             "fest/polyfill/*": ["../../projects/shared/fest/polyfill/*"],
             "polyfill/*": ["../../projects/shared/fest/polyfill/*"],
             "veela-lib": ["../../projects/veela.css/src/scss/index.scss"],
-            "veela-lib/*": ["../../projects/veela.css/src/scss/*"]
+            "veela-lib/*": ["../../projects/veela.css/src/scss/*"],
+            "frontend/shells/base/index": [
+                "../../../apps/CrossWord/src/frontend/shells/base/index.ts"
+            ],
+            "shells/window": [
+                "../../../apps/CrossWord/src/frontend/ai-slop/window/index.ts"
+            ],
+            "views/apis/channel-actions": [
+                "../../projects/subsystem/src/routing/api/channel-actions.ts"
+            ],
+            "views/apis/channel-invokable": [
+                "../../projects/subsystem/src/routing/api/channel-invokable.ts"
+            ],
+            "shared/routing/registry": [
+                "../../shared/src/routing/core/registry.ts"
+            ],
+            "shared/routing/views": ["../../shared/src/routing/core/views.ts"],
+            "shared/routing/view-prefetch": [
+                "../../shared/src/routing/core/view-prefetch.ts"
+            ],
+            "shared/routing/layer-manager": [
+                "../../shared/src/routing/core/layer-manager.ts"
+            ],
+            "shared/routing/app-layers": [
+                "../../shared/src/routing/core/app-layers.ts"
+            ],
+            "shared/routing/implicit-view-bridge": [
+                "../../shared/src/routing/core/implicit-view-bridge.ts"
+            ],
+            "shared/routing/channel-unknown": [
+                "../../shared/src/routing/core/channel-unknown.ts"
+            ],
+            "shared/routing/view-transitions": [
+                "../../shared/src/routing/core/view-transitions.ts"
+            ],
+            "shared/policies/ingress-pipeline-guard": [
+                "../../shared/src/routing/policies/ingress-pipeline-guard.ts"
+            ],
+            "shared/policies/event-handling-policy": [
+                "../../shared/src/routing/policies/event-handling-policy.ts"
+            ],
+            "shared/native/cws-bridge": [
+                "../../shared/src/routing/native/cws-bridge.ts"
+            ],
+            "shared/native/clipboard-device": [
+                "../../shared/src/routing/native/clipboard-device.ts"
+            ],
+            "shared/styles": ["../../shared/src/styles.ts"],
+            "shared/transport/hub-socket-boot": [
+                "../../shared/src/boot/hub-socket-boot.ts"
+            ],
+            "shared/transport/websocket": [
+                "../../shared/src/boot/websocket.ts"
+            ],
+            "shared/pwa/*": ["../../shared/src/routing/pwa/*"],
+            "shared/config/*": ["../../shared/src/other/config/*"],
+            "shared/utils/*": ["../../shared/src/other/utils/*"],
+            "core/modules/Clipboard": ["../../shared/src/modules/Clipboard.ts"],
+            "core/modules/TemplateManager": [
+                "../../projects/lur.e/src/interactive/modules/TemplateManager.ts"
+            ],
+            "core/text": ["../../shared/src/text.ts"],
+            "core/clipboard-device": [
+                "../../projects/subsystem/runtime/clipboard-device.ts"
+            ],
+            "shells/immersive/index": ["../immersive-shell/src/index.ts"],
+            "shells/content/index": ["../content-shell/src/index.ts"],
+            "shells/minimal/preview": ["./src/preview.ts"]
         },
         "target": "ESNext",
         "module": "ESNext",
