@@ -5,8 +5,8 @@
 import { resolve } from "node:path";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig, searchForWorkspaceRoot } from "vite";
-import { getViewResolveAliases, workspaceRoot, viewsRoot } from "../../views/view-resolve-aliases.js";
-import { tryLoadDevSslFromDir } from "../../views/shared/vite.view.config.js";
+import { getViewResolveAliases, workspaceRoot, viewsRoot } from "../shared/view-resolve-aliases.js";
+import { tryLoadDevSslFromDir } from "../shared/vite.view.config.js";
 
 const pkgRoot = resolve(import.meta.dirname);
 const crosswordFrontend = resolve(workspaceRoot, "apps/CrossWord/src/frontend");

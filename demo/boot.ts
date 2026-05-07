@@ -7,8 +7,7 @@
  */
 import "fest/icon";
 import type { ViewId } from "shared/boot/types";
-import { bootMinimal } from "boot/ts/BootLoader";
-import { isEnabledView } from "shared/routing/views";
+import { bootMinimal } from "boot/BootLoader";
 
 function readInitialViewFromSearch(): ViewId {
     try {
