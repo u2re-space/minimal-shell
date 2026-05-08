@@ -21,6 +21,7 @@ import "fest/icon";
 import { ShellBase } from "boot/shells";
 import type { ShellTheme } from "shared/boot/types";
 import { isEnabledView } from "core/routing/core/views";
+import { SHELL_SLOT } from "boot/shell-slots";
 
 // ============================================================================
 // NAVIGATION ITEMS
@@ -72,21 +73,29 @@ export class MinimalShell extends ShellBase {
     protected createLayout(): HTMLElement {
         const root = H`
             <div class="app-shell" data-shell="minimal">
-                <nav class="app-shell__nav" role="navigation" aria-label="Main navigation">
-                    <div class="app-shell__nav-left" data-nav-left>
-                        ${this.renderNavButtons()}
+                <div class="app-shell__viewport">
+                    <div class="app-shell__underlying">
+                        <slot name="${SHELL_SLOT.underlying}"></slot>
                     </div>
-                    <div class="app-shell__nav-right" data-shell-toolbar>
-                        <!-- View-specific toolbar actions go here -->
+                    <nav class="app-shell__nav" role="navigation" aria-label="Main navigation">
+                        <div class="app-shell__nav-left" data-nav-left>
+                            ${this.renderNavButtons()}
+                        </div>
+                        <div class="app-shell__nav-right" data-shell-toolbar>
+                            <!-- View-specific toolbar actions go here -->
+                        </div>
+                    </nav>
+                    <main class="app-shell__content" data-shell-content role="main">
+                        <div class="app-shell__loading">
+                            <div class="loading-spinner"></div>
+                            <span>Loading...</span>
+                        </div>
+                        <slot></slot>
+                    </main>
+                    <div class="app-shell__overlays" data-shell-overlays>
+                        <slot name="${SHELL_SLOT.overlay}"></slot>
                     </div>
-                </nav>
-                <main class="app-shell__content" data-shell-content role="main">
-                    <div class="app-shell__loading">
-                        <div class="loading-spinner"></div>
-                        <span>Loading...</span>
-                    </div>
-                    <slot name="view"></slot>
-                </main>
+                </div>
                 <div class="app-shell__status" data-shell-status hidden aria-live="polite"></div>
             </div>
         ` as HTMLElement;
@@ -181,8 +190,7 @@ export class MinimalShell extends ShellBase {
     }
 
     /**
-     * View hosts (`cw-view-*`) stay in the shell host's light DOM with `slot="view"` so they project
-     * into shadow `<main>` (see `MinimalShellHostElement`).
+     * Routed views: default (unnamed) slot in `<main>`; nodes stay in the shell host light DOM for shadow projection.
      */
     protected renderView(element: HTMLElement): void {
         if (!this.contentContainer || !this.rootElement) {
@@ -204,7 +212,7 @@ export class MinimalShell extends ShellBase {
 
         element.setAttribute("data-view", this.currentView.value);
         element.hidden = false;
-        element.slot = "view";
+        element.removeAttribute("slot");
 
         if (!this.rootElement.contains(element)) {
             this.rootElement.appendChild(element);

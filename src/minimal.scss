@@ -57,7 +57,8 @@
         position: absolute;
         inset: 0;
         display: grid;
-        grid-template-rows: [toolbar-row] auto [content-row] minmax(0, 1fr);
+        /* Single chrome column: nav + main live inside `.app-shell__viewport` (shared layer stack with underlying/overlays). */
+        grid-template-rows: [viewport-row] minmax(0, 1fr);
         grid-template-columns: minmax(0, 1fr);
         /* stretch: center shrink-wraps grid items (viewer chrome looked like a small floating island in CRX). */
         align-items: stretch;
@@ -119,6 +120,10 @@
     }
 
     .app-shell__nav {
+        grid-row: shell-nav-row;
+        grid-column: 1;
+        position: relative;
+        z-index: 1;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -298,14 +303,64 @@
         }
     }
 
+    /* Stacked layers: underlying (absolute) → chrome grid (nav + main, z-index 1) → overlays (absolute).
+     * `display: contents` on slots lifts slotted views into this grid when applicable. */
+    .app-shell__viewport {
+        grid-row: viewport-row;
+        display: grid;
+        grid-template-rows: [shell-nav-row] auto [shell-main-row] minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
+        position: relative;
+        min-inline-size: 0;
+        min-block-size: 0;
+        overflow: hidden;
+        isolation: isolate;
+        align-self: stretch;
+    }
+
+    .app-shell__underlying {
+        /* Full viewport bleed behind nav + main; does not consume grid rows (`position: absolute`). */
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
+        min-inline-size: 0;
+        min-block-size: 0;
+
+        & > slot::slotted(*) {
+            pointer-events: auto;
+        }
+    }
+
+    .app-shell__overlays {
+        position: absolute;
+        inset: 0;
+        z-index: 10000;
+        pointer-events: none;
+        overflow: visible;
+
+        & > slot::slotted(*) {
+            pointer-events: auto;
+        }
+
+        & > * {
+            pointer-events: auto;
+        }
+    }
+
     .app-shell__content {
         container-type: size;
         /* layout + style: avoid `strict` paint containment fighting view/token repaints after async theme loads */
         contain: layout style;
+        grid-row: shell-main-row;
+        grid-column: 1;
         position: relative;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
+        z-index: 1;
+        /* Chrome column: optional boot loader row + minmax main (grid boxes for slotted views via `display: contents` on `<slot>`). */
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
         inline-size: stretch;
         block-size: stretch;
         max-inline-size: stretch;
@@ -324,28 +379,20 @@
         box-sizing: border-box;
         border-radius: 0px;
 
-        [data-view] {
-            position: absolute;
-            inset: 0;
-            overflow: auto;
-            scrollbar-width: thin;
-            inline-size: stretch;
-            block-size: stretch;
-            min-inline-size: 0;
-            min-block-size: fit-content;
-        }
-
-        /* Settings: inner `.settings-screen__body` scrolls; keep tabs + footer fixed in the view box */
-        [data-view="settings"] {
-            overflow: hidden;
-            min-block-size: 0;
+        slot:not([name])::slotted([data-view="explorer"]) {
+            display: flex !important;
+            flex-direction: column !important;
+            min-block-size: 0 !important;
+            block-size: 100% !important;
+            max-block-size: 100% !important;
+            overflow: hidden !important;
         }
 
         /*
-         * Views assigned to <slot name="view"> live in light DOM; descendant selectors
-         * do not cross shadow boundaries — use ::slotted for cw-shell-* wrappers.
+         * Default-slot views live in light DOM; descendant selectors do not cross shadow — use ::slotted.
          */
-        slot[name="view"]::slotted([data-view]) {
+        slot:not([name])::slotted([data-view]) {
+            grid-row: 2;
             position: absolute;
             inset: 0;
             overflow: auto;
@@ -356,7 +403,7 @@
             min-block-size: fit-content;
         }
 
-        slot[name="view"]::slotted([data-view="settings"]) {
+        slot:not([name])::slotted([data-view="settings"]) {
             overflow: hidden;
             min-block-size: 0;
         }
@@ -366,20 +413,15 @@
          * so the inactive view cannot intercept scroll/pointer (minimal single-slot shell).
          */
         & > [data-view][hidden],
-        slot[name="view"]::slotted([hidden]),
-        slot[name="view"]::slotted([data-view][hidden]) {
+        slot:not([name])::slotted([hidden]),
+        slot:not([name])::slotted([data-view][hidden]) {
             display: none !important;
             pointer-events: none !important;
             visibility: hidden !important;
         }
 
-        & > * {
-            flex: 1;
-            overflow: auto;
-        }
-
-        slot[name="view"]::slotted(*) {
-            flex: 1 1 auto;
+        slot:not([name])::slotted(*) {
+            grid-row: 2;
             min-block-size: 0;
             min-inline-size: 0;
             overflow: auto;
@@ -429,6 +471,7 @@
     .app-shell__loading {
         position: absolute;
         inset: 0;
+        z-index: 20;
         display: none;
         flex-direction: column;
         align-items: center;
@@ -509,6 +552,15 @@
     }
 
     @media print {
+        .app-shell__viewport {
+            display: contents !important;
+        }
+
+        .app-shell__underlying,
+        .app-shell__overlays {
+            display: none !important;
+        }
+
         .app-shell__content {
             overflow: visible;
             contain: none;
@@ -519,7 +571,7 @@
             }
 
             & > [data-view],
-            slot[name="view"]::slotted([data-view]) {
+            slot:not([name])::slotted([data-view]) {
                 position: static !important;
                 inset: auto !important;
                 overflow: visible !important;
