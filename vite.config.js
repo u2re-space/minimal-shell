@@ -1,7 +1,8 @@
 /**
- * Minimal shell HTTPS dev (toolbar + single view). Default view: `viewer` (markdown-view via CrossWord symlink).
+ * Minimal shell HTTPS dev (toolbar + single view). Default view: `viewer` (markdown-view under `modules/views`).
  * Port 443, PEM pair in `./certs` or `@vitejs/plugin-basic-ssl` fallback; plain HTTP via `VIEW_DEV_HTTP=1`.
  */
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig, searchForWorkspaceRoot } from "vite";
@@ -29,6 +30,15 @@ const serverHttps = !useHttps ? false : projectSsl !== null ? projectSsl : undef
 
 const viteDevOrigin = (process.env.VITE_DEV_ORIGIN || "").trim();
 
+const fsAllow = [
+    searchForWorkspaceRoot(pkgRoot),
+    workspaceRoot,
+    viewsRoot,
+    resolve(workspaceRoot, "modules/views"),
+    shellsRoot
+];
+if (existsSync(crosswordFrontend)) fsAllow.push(crosswordFrontend);
+
 export default defineConfig({
     root: pkgRoot,
     plugins,
@@ -43,14 +53,7 @@ export default defineConfig({
         ...(viteDevOrigin ? { origin: viteDevOrigin } : {}),
         https: serverHttps,
         fs: {
-            allow: [
-                searchForWorkspaceRoot(pkgRoot),
-                workspaceRoot,
-                viewsRoot,
-                crosswordFrontend,
-                resolve(workspaceRoot, "modules/views"),
-                shellsRoot
-            ]
+            allow: fsAllow
         }
     },
     build: {
