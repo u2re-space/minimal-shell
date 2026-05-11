@@ -441,12 +441,6 @@
         }
     }
 
-    /* Airpad: single scroll surface inside `.view-cwsp .container` — avoid nested shell scroller. */
-    :host([data-active-view="airpad"]) .app-shell__content {
-        overflow: hidden;
-        overscroll-behavior: none;
-    }
-
     .app-shell__status {
         position: fixed;
         inset-block-end: var(--space-2xl, 1.5rem);

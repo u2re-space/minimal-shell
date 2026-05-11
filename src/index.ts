@@ -40,7 +40,6 @@ const ALL_NAV_ITEMS = [
     { id: "viewer", name: "Markdown", icon: "eye" },
     { id: "explorer", name: "Explorer", icon: "folder" },
     { id: "workcenter", name: "Work Center", icon: "lightning" },
-    { id: "airpad", name: "Airpad", icon: "hand-pointing" },
     { id: "settings", name: "Settings", icon: "gear" },
     { id: "history", name: "History", icon: "clock-counter-clockwise" }
 ] as const satisfies readonly NavItem[];
