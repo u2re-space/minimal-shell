@@ -40,6 +40,8 @@ const ALL_NAV_ITEMS = [
     { id: "viewer", name: "Markdown", icon: "eye" },
     { id: "explorer", name: "Explorer", icon: "folder" },
     { id: "workcenter", name: "Work Center", icon: "lightning" },
+    /* AirPad: remote trackpad/keyboard + clipboard (primary view for the Capacitor shell). */
+    { id: "airpad", name: "AirPad", icon: "hand-pointing" },
     { id: "settings", name: "Settings", icon: "gear" },
     { id: "history", name: "History", icon: "clock-counter-clockwise" }
 ] as const satisfies readonly NavItem[];
@@ -236,6 +238,14 @@ export class MinimalShell extends ShellBase {
 
         // Setup path-based navigation
         this.setupPopstateNavigation();
+
+        // Capacitor (CWSAndroid): Android runtime permissions + share/process-text bridge.
+        void import("boot/capacitor-permissions")
+            .then((m) => m.ensureCapacitorPermissions())
+            .catch(() => { /* best-effort */ });
+        void import("boot/capacitor-share-intent")
+            .then((m) => m.installCapacitorShareIntentBridge())
+            .catch(() => { /* best-effort */ });
     }
 }
 
