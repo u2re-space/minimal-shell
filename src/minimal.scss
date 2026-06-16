@@ -403,9 +403,13 @@
             min-block-size: fit-content;
         }
 
-        slot:not([name])::slotted([data-view="settings"]) {
+        slot:not([name])::slotted([data-view="settings"]),
+        slot:not([name])::slotted(.view-settings) {
             overflow: hidden;
             min-block-size: 0;
+            block-size: 100%;
+            max-block-size: 100%;
+            display: grid;
         }
 
         /*
