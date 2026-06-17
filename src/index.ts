@@ -40,7 +40,9 @@ const ALL_NAV_ITEMS = [
     { id: "viewer", name: "Markdown", icon: "eye" },
     { id: "explorer", name: "Explorer", icon: "folder" },
     { id: "workcenter", name: "Work Center", icon: "lightning" },
-    /* AirPad: remote trackpad/keyboard + clipboard (primary view for the Capacitor shell). */
+    /* CWSP network diagnostics — default home on Capacitor CWSAndroid. */
+    { id: "network", name: "Network", icon: "wifi-high" },
+    /* AirPad: remote trackpad/keyboard + clipboard. */
     { id: "airpad", name: "AirPad", icon: "hand-pointing" },
     { id: "settings", name: "Settings", icon: "gear" },
     { id: "history", name: "History", icon: "clock-counter-clockwise" }
@@ -116,7 +118,7 @@ export class MinimalShell extends ShellBase {
                 class="app-shell__admin-door"
                 data-admin-door
                 aria-label="Open server admin (HTTPS)"
-                title="Server admin (HTTPS :8443). Configure origins in Settings → Server."
+                title="Server admin (HTTPS :8434). Configure origins in Settings → Server."
             >ADM</button>
         ` as HTMLButtonElement;
 

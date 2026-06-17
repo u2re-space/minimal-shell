@@ -194,7 +194,7 @@
         }
     }
 
-    /* CWS / cwsp: reach :8443 admin when there is no address bar (PWA, embedded). */
+    /* CWS / cwsp: reach :8434 when there is no address bar (PWA, embedded). */
     .app-shell__admin-door {
         flex-shrink: 0;
         font-size: 0.7rem;
@@ -404,12 +404,15 @@
         }
 
         slot:not([name])::slotted([data-view="settings"]),
-        slot:not([name])::slotted(.view-settings) {
+        slot:not([name])::slotted(.view-settings),
+        slot:not([name])::slotted([data-view="network"]),
+        slot:not([name])::slotted(.cw-network-view-host) {
             overflow: hidden;
             min-block-size: 0;
             block-size: 100%;
             max-block-size: 100%;
-            display: grid;
+            display: flex;
+            flex-direction: column;
         }
 
         /*
