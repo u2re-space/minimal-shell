@@ -248,6 +248,9 @@ export class MinimalShell extends ShellBase {
         void import("boot/capacitor-share-intent")
             .then((m) => m.installCapacitorShareIntentBridge())
             .catch(() => { /* best-effort */ });
+        void import("boot/capacitor-clipboard-asset")
+            .then((m) => m.installCapacitorClipboardAssetBridge())
+            .catch(() => { /* best-effort */ });
     }
 }
 
