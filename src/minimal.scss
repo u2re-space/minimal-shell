@@ -194,6 +194,37 @@
         }
     }
 
+    /* Public /cwsp hub: Neutralino bridge status + connection dialog. */
+    .app-shell__connection-source {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.3rem 0.5rem;
+        border-radius: var(--radius-sm, 6px);
+        border: 1px solid color-mix(in srgb, var(--color-primary, #3975ca) 45%, var(--shell-nav-border));
+        background: color-mix(in srgb, var(--color-primary, #3975ca) 18%, var(--shell-nav-bg));
+        color: color-mix(in srgb, var(--color-primary, #1565c0) 70%, var(--shell-nav-fg));
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+
+        &:hover {
+            background: color-mix(in srgb, var(--color-primary, #3975ca) 28%, var(--shell-nav-bg));
+        }
+
+        &:active {
+            background: color-mix(in srgb, var(--color-primary, #3975ca) 34%, var(--shell-nav-bg));
+        }
+
+        /* Bridge live — shared SoT with Neutralino /service/config */
+        &[data-bridge-live="1"] {
+            border-color: color-mix(in srgb, #2e7d32 50%, var(--shell-nav-border));
+            background: color-mix(in srgb, #2e7d32 22%, var(--shell-nav-bg));
+            color: color-mix(in srgb, #1b5e20 75%, var(--shell-nav-fg));
+        }
+    }
+
     /* CWS / cwsp: reach :8434 when there is no address bar (PWA, embedded). */
     .app-shell__admin-door {
         flex-shrink: 0;

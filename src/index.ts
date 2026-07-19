@@ -104,8 +104,42 @@ export class MinimalShell extends ShellBase {
         ` as HTMLElement;
 
         this.setupNavClickHandlers(root);
+        this.setupConnectionSourceButton(root);
         this.setupAdminDoorButton(root);
         return root;
+    }
+
+    /**
+     * Public hub (cwsp.u2re.space / /cwsp): open connection-source dialog.
+     * WHY: only on `data-cwsp-surface=cwsp-control` so Neutralino/gateway shells stay unchanged.
+     */
+    private setupConnectionSourceButton(root: HTMLElement): void {
+        try {
+            if (document.documentElement.dataset.cwspSurface !== "cwsp-control") return;
+        } catch {
+            return;
+        }
+        const navRight = root.querySelector("[data-shell-toolbar]");
+        if (!navRight || navRight.querySelector("[data-connection-source]")) return;
+
+        const btn = H`
+            <button
+                type="button"
+                class="app-shell__connection-source"
+                data-connection-source
+                aria-label="Connect to another source"
+                title="Connection source — Neutralino bridge + CWSP endpoint (login/PIN when needed)"
+            >SRC</button>
+        ` as HTMLButtonElement;
+
+        navRight.appendChild(btn);
+        btn.addEventListener("click", () => {
+            try {
+                window.dispatchEvent(new CustomEvent("cwsp:open-connection-source"));
+            } catch (e) {
+                console.warn("[MinimalShell] connection source:", e);
+            }
+        });
     }
 
     private setupAdminDoorButton(root: HTMLElement): void {
