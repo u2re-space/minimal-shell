@@ -42,8 +42,6 @@ const ALL_NAV_ITEMS = [
     { id: "workcenter", name: "Work Center", icon: "lightning" },
     /* CWSP network diagnostics — default home on Capacitor CWSAndroid. */
     { id: "network", name: "Network", icon: "wifi-high" },
-    /* AirPad: remote trackpad/keyboard + clipboard. */
-    { id: "airpad", name: "AirPad", icon: "hand-pointing" },
     { id: "settings", name: "Settings", icon: "gear" },
     { id: "history", name: "History", icon: "clock-counter-clockwise" }
 ] as const satisfies readonly NavItem[];
