@@ -330,12 +330,14 @@
 
     @media (display-mode: window-controls-overlay) {
         :where(.app-shell, .app-shell[data-style="minimal"]) .app-shell__nav {
+            window-drag: move;
             -webkit-app-region: drag;
             app-region: drag;
         }
 
         :where(.app-shell, .app-shell[data-style="minimal"]) .app-shell__nav-left,
         :where(.app-shell, .app-shell[data-style="minimal"]) .app-shell__nav-right {
+            window-drag: none;
             -webkit-app-region: no-drag;
             app-region: no-drag;
         }
