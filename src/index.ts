@@ -243,6 +243,22 @@ export class MinimalShell extends ShellBase {
             if (this.rootElement.contains(prev.element)) {
                 prev.element.remove();
             }
+            // WHY: View Transitions may defer onHide — stop Transfer History Neu poll now
+            // so Neutralino WebView cannot stay in a poll/JSON storm after leaving History.
+            if (previousId === "history" && this.currentView.value !== "history") {
+                try {
+                    const g = globalThis as unknown as {
+                        __CWSP_TRANSFER_HISTORY_UI_ACTIVE__?: boolean;
+                    };
+                    if (g.__CWSP_TRANSFER_HISTORY_UI_ACTIVE__) {
+                        void import("views/history/transfer-history-runtime")
+                            .then((m) => m.setTransferHistoryUiActive(false))
+                            .catch(() => undefined);
+                    }
+                } catch {
+                    /* ignore */
+                }
+            }
         }
 
         element.setAttribute("data-view", this.currentView.value);

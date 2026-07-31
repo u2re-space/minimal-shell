@@ -482,11 +482,16 @@
         pointer-events: none;
         overflow: visible;
 
+        /* WHY: slot itself must stay non-hit-testing; only real overlay nodes capture. */
+        & > slot {
+            pointer-events: none;
+        }
+
         & > slot::slotted(*) {
             pointer-events: auto;
         }
 
-        & > * {
+        & > :not(slot) {
             pointer-events: auto;
         }
     }
