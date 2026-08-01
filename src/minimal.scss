@@ -404,9 +404,10 @@
             /* INVARIANT: readable label+icon on light theme (no white-on-white). */
             background-color: var(
                 --shell-btn-active-bg,
-                color-mix(in oklab, #5a7fff 18%, #fafbfc)
+                color-mix(in oklab, #2e3a64 18%, #fafbfc)
             );
             color: var(--shell-btn-active-fg, #1e293b);
+            --icon-color: var(var(--shell-btn-active-fg, var(--color-on-surface, #1e293b)));
 
             /*
              * WHY: `--icon-color` is a registered inheriting property (Phosphor initial #fff).
@@ -414,7 +415,7 @@
              */
             ui-icon {
                 opacity: 1;
-                --icon-color: var(--color-primary, #5a7fff);
+                --icon-color: var(var(--shell-btn-active-fg, var(--color-on-surface, #1e293b)));
                 color: var(--icon-color);
             }
 
