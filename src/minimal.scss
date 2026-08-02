@@ -377,7 +377,7 @@
         flex-shrink: 0;
 
         ui-icon {
-            --icon-size: clamp(1.25rem, 5.5vmin, 1.75rem);
+            --icon-size: clamp(1.25rem, 5.5dvmin, 1.75rem);
             /* WHY: follow nav ink (light/dark); do not rely on Phosphor @property defaults. */
             --icon-color: currentColor;
             font-size: var(--icon-size);
@@ -694,7 +694,7 @@
             padding: var(--space-sm, 0.5rem) var(--space-sm, 0.65rem);
 
             ui-icon {
-                --icon-size: clamp(1.35rem, 6vmin, 1.85rem);
+                --icon-size: clamp(1.35rem, 6dvmin, 1.85rem);
                 font-size: var(--icon-size);
                 min-inline-size: 1.35rem;
                 min-block-size: 1.35rem;
