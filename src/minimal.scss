@@ -378,6 +378,8 @@
 
         ui-icon {
             --icon-size: clamp(1.25rem, 5.5vmin, 1.75rem);
+            /* WHY: follow nav ink (light/dark); do not rely on Phosphor @property defaults. */
+            --icon-color: currentColor;
             font-size: var(--icon-size);
             opacity: 0.8;
             flex-shrink: 0;
@@ -407,15 +409,15 @@
                 color-mix(in oklab, #2e3a64 18%, #fafbfc)
             );
             color: var(--shell-btn-active-fg, #1e293b);
-            --icon-color: var(var(--shell-btn-active-fg, var(--color-on-surface, #1e293b)));
+            /* WHY: was `var(var(...))` — invalid, icons lost ink on active pills. */
+            --icon-color: var(--shell-btn-active-fg, var(--color-on-surface, #1e293b));
 
             /*
-             * WHY: `--icon-color` is a registered inheriting property (Phosphor initial #fff).
-             * Scope it to `ui-icon` only — never set on the button (would leak toward label).
+             * Scope `--icon-color` to `ui-icon` so button label color stays independent.
              */
             ui-icon {
                 opacity: 1;
-                --icon-color: var(var(--shell-btn-active-fg, var(--color-on-surface, #1e293b)));
+                --icon-color: var(--shell-btn-active-fg, var(--color-on-surface, #1e293b));
                 color: var(--icon-color);
             }
 
