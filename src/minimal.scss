@@ -8,17 +8,22 @@
     :where(:root, .app-shell, .app-shell[data-style="minimal"]):has(.app-shell, .app-shell[data-style="minimal"]) {
         color-scheme: light dark;
 
-        /* colors */
-        --shell-bg: light-dark(var(--color-surface), var(--color-surface));
-        --shell-fg: light-dark(var(--color-on-surface), var(--color-on-surface));
-        --shell-nav-bg: light-dark(var(--color-surface-container-high), var(--color-surface-container-high));
-        --shell-nav-fg: light-dark(var(--color-on-surface), var(--color-on-surface));
-        --shell-nav-border: light-dark(var(--color-outline-variant), var(--color-outline-variant));
-        --shell-btn-hover: light-dark(var(--color-surface-container, var(--color-surface-container)), var(--color-surface-container, var(--color-surface-container)));
-        --shell-btn-active-bg: light-dark(var(--color-surface-container-low, var(--color-surface-container-low)), var(--color-surface-container-low, var(--color-surface-container-low)));
-        --shell-btn-active-fg: light-dark(var(--color-on-surface), var(--color-on-surface));
-        --shell-status-bg: light-dark(var(--color-surface-container-low, var(--color-surface-container-low)), var(--color-surface-container-low, var(--color-surface-container-low)));
-        --shell-status-fg: light-dark(var(--color-on-surface), var(--color-on-surface));
+        /*
+         * NOTE: `--shell-*` color defaults are owned by veela `core/misc/_tokens.scss`
+         * (single source of truth). They inherit via `:root` when veela is loaded.
+         * The `html[data-theme]` hex blocks below remain as offline/SSR fallbacks for
+         * standalone minimal-shell without veela.
+         */
+        --shell-bg: var(--color-surface);
+        --shell-fg: var(--color-on-surface);
+        --shell-nav-bg: var(--color-surface-container-high);
+        --shell-nav-fg: var(--color-on-surface);
+        --shell-nav-border: var(--color-outline-variant);
+        --shell-btn-hover: var(--color-surface-container);
+        --shell-btn-active-bg: color-mix(in oklab, var(--color-primary) 18%, var(--color-surface));
+        --shell-btn-active-fg: var(--color-on-surface);
+        --shell-status-bg: var(--color-surface-container-low);
+        --shell-status-fg: var(--color-on-surface);
 
         /* layout */
         --shell-nav-height: var(--shell-nav-height-base, 48px);
@@ -64,8 +69,8 @@
 
     /* cw-shell-minimal :host — `.app-shell` is in shadow; use `:host` only. */
     :host {
-        --shell-bg: light-dark(var(--color-surface), var(--color-surface));
-        --shell-nav-bg: light-dark(var(--color-surface-container-high), var(--color-surface-container-high));
+        /* NOTE: inherit veela `--shell-*` defaults; only re-declare minimal host overrides. */
+        --shell-nav-bg: var(--color-surface-container-high);
     }
 
     /*
