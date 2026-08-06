@@ -298,9 +298,9 @@
 
         /* Bridge live — shared SoT with Neutralino /service/config */
         &[data-bridge-live="1"] {
-            border-color: color-mix(in srgb, #2e7d32 50%, var(--shell-nav-border));
-            background: color-mix(in srgb, #2e7d32 22%, var(--shell-nav-bg));
-            color: color-mix(in srgb, #1b5e20 75%, var(--shell-nav-fg));
+            border-color: color-mix(in srgb, var(--color-success, #2e7d32) 50%, var(--shell-nav-border));
+            background: color-mix(in srgb, var(--color-success, #2e7d32) 22%, var(--shell-nav-bg));
+            color: color-mix(in srgb, var(--color-success, #1b5e20) 75%, var(--shell-nav-fg));
         }
     }
 
