@@ -5,7 +5,7 @@
  *
  * Override with URL: `/?view=explorer` etc. Uses `rememberChoice: false` so localStorage does not steal the demo default.
  */
-import "fest/icon";
+import "@fest-lib/icon";
 import type { ViewId } from "shared/boot/types";
 import { bootMinimal } from "boot/BootLoader";
 

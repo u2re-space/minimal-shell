@@ -5,10 +5,10 @@
  * home wallpaper/speed-dial content. It is responsible for preventing recursive
  * close/setView loops while keeping shell navigation in sync with history.
  */
-import { observe, propRef, affected } from "fest/object";
-import { H, C } from "fest/lure";
-import { navigate, historyState } from "fest/lure";
-import { isPrimitive } from "fest/core";
+import { observe, propRef, affected } from "@fest-lib/object";
+import { H, C } from "@fest-lib/lure";
+import { navigate, historyState } from "@fest-lib/lure";
+import { isPrimitive } from "@fest-lib/core";
 import { scheduleFrame } from "core/utils/Runtime";
 
 //

@@ -9,15 +9,15 @@
  * - NO split view, NO sidebar, NO tabs
  */
 
-import { H } from "fest/lure";
-import { affected } from "fest/object";
+import { H } from "@fest-lib/lure";
+import { affected } from "@fest-lib/object";
 import type { ShellId, ShellLayoutConfig, ViewId } from "shared/boot/types";
 
 // @ts-ignore - SCSS import
 import style from "./minimal.scss?inline";
 
 // Side effect: register icon component
-import "fest/icon";
+import "@fest-lib/icon";
 import { ShellBase } from "boot/shells";
 import type { ShellTheme } from "shared/boot/types";
 import { isEnabledView } from "core/routing/core/views";

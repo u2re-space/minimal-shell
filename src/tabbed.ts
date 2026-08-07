@@ -1,10 +1,10 @@
 
 // @ts-ignore
-import { preloadStyle } from "fest/dom"; //@ts-ignore
+import { preloadStyle } from "@fest-lib/dom"; //@ts-ignore
 import styles from "./TabbedSidebar.scss?inline"
-import { H, M, makeClickOutsideTrigger, property, Q, registerSidebar } from "fest/lure";
-import { UIElement } from "fest/fl-ui";
-import { $trigger, conditional, observableByMap, propRef } from "fest/object";
+import { H, M, makeClickOutsideTrigger, property, Q, registerSidebar } from "@fest-lib/lure";
+import { UIElement } from "@fest-lib/fl-ui";
+import { $trigger, conditional, observableByMap, propRef } from "@fest-lib/object";
 
 const styled = preloadStyle(styles);
 
