@@ -4,15 +4,46 @@
 
 @layer shell.tokens, shell.base, shell.components, shell.utilities, shell.markdown-host-theme, shell.overrides;
 
+/*
+ * WHY: toolbar must follow Material You / Appearance `--base-color` like Settings `--sv-*`.
+ * Fg is `--u2-color-mod` (not `--color-on-surface`): that token can stay a light
+ * `light-dark()` result (OS dark + app light) and wash out the active pill.
+ */
+@mixin shell-adaptive-theme($scheme) {
+    color-scheme: $scheme;
+
+    @if $scheme == dark {
+        --shell-bg: var(--color-surface, --u2-color-mod(var(--base-color, #5a9ec8), 940));
+        --shell-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
+        --shell-nav-bg: var(--color-surface-container-high, --u2-color-mod(var(--base-color, #5a9ec8), 980));
+        --shell-nav-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
+        --shell-nav-border: var(--color-outline-variant, --u2-color-mod(var(--base-color, #5a9ec8), 640));
+        --shell-btn-hover: var(--color-surface-container, --u2-color-mod(var(--base-color, #5a9ec8), 960));
+        --shell-btn-active-bg: color-mix(in oklab, var(--color-primary, #5a9ec8) 22%, var(--shell-bg));
+        --shell-btn-active-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
+        --shell-status-bg: var(--color-surface-container-low, --u2-color-mod(var(--base-color, #5a9ec8), 940));
+        --shell-status-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
+    } @else {
+        --shell-bg: var(--color-surface, --u2-color-mod(var(--base-color, #5a9ec8), 20));
+        --shell-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
+        --shell-nav-bg: var(--color-surface-container-high, --u2-color-mod(var(--base-color, #5a9ec8), 40));
+        --shell-nav-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
+        --shell-nav-border: var(--color-outline-variant, --u2-color-mod(var(--base-color, #5a9ec8), 640));
+        --shell-btn-hover: var(--color-surface-container, --u2-color-mod(var(--base-color, #5a9ec8), 80));
+        --shell-btn-active-bg: color-mix(in oklab, var(--color-primary, #5a9ec8) 16%, var(--shell-bg));
+        --shell-btn-active-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
+        --shell-status-bg: var(--color-surface-container-low, --u2-color-mod(var(--base-color, #5a9ec8), 40));
+        --shell-status-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
+    }
+}
+
 @layer shell.tokens {
     :where(:root, .app-shell, .app-shell[data-style="minimal"]):has(.app-shell, .app-shell[data-style="minimal"]) {
         color-scheme: light dark;
 
         /*
-         * NOTE: `--shell-*` color defaults are owned by veela `core/misc/_tokens.scss`
-         * (single source of truth). They inherit via `:root` when veela is loaded.
-         * The `html[data-theme]` hex blocks below remain as offline/SSR fallbacks for
-         * standalone minimal-shell without veela.
+         * NOTE: `--shell-*` color defaults are owned by veela `core/misc/_tokens.scss`.
+         * `data-theme` blocks below re-pin the same `--base-color` scale (not a slate fork).
          */
         --shell-bg: var(--color-surface);
         --shell-fg: var(--color-on-surface);
@@ -39,32 +70,12 @@
      */
     html[data-theme="light"]:has([data-shell="minimal"]),
     html[data-theme="light"] .app-shell[data-shell="minimal"] {
-        color-scheme: light;
-        --shell-bg: #fafbfc;
-        --shell-fg: #1e293b;
-        --shell-nav-bg: #e8ecf4;
-        --shell-nav-fg: #1e293b;
-        --shell-nav-border: #94a3b8;
-        --shell-btn-hover: #eef1f8;
-        --shell-btn-active-bg: color-mix(in oklab, #5a7fff 18%, #fafbfc);
-        --shell-btn-active-fg: #1e293b;
-        --shell-status-bg: #f4f6fa;
-        --shell-status-fg: #1e293b;
+        @include shell-adaptive-theme(light);
     }
 
     html[data-theme="dark"]:has([data-shell="minimal"]),
     html[data-theme="dark"] .app-shell[data-shell="minimal"] {
-        color-scheme: dark;
-        --shell-bg: #0f172a;
-        --shell-fg: #f1f5f9;
-        --shell-nav-bg: #1e293b;
-        --shell-nav-fg: #f1f5f9;
-        --shell-nav-border: #475569;
-        --shell-btn-hover: #1e293b;
-        --shell-btn-active-bg: color-mix(in oklab, #7ca7ff 22%, #0f172a);
-        --shell-btn-active-fg: #f1f5f9;
-        --shell-status-bg: #0f172a;
-        --shell-status-fg: #f1f5f9;
+        @include shell-adaptive-theme(dark);
     }
 
     /* cw-shell-minimal :host — `.app-shell` is in shadow; use `:host` only. */
@@ -73,36 +84,14 @@
         --shell-nav-bg: var(--color-surface-container-high);
     }
 
-    /*
-     * WHY: Literal fg/bg — do NOT chain through `--color-on-surface`.
-     * That token can still be a light `light-dark()` result (OS dark + app light),
-     * so `var(--color-on-surface, #1e293b)` never reaches the fallback and the
-     * active pill label vanishes (white-on-lavender).
-     */
     :host([data-theme="light"]),
     :host-context(html[data-theme="light"]) {
-        color-scheme: light;
-        --shell-bg: #fafbfc;
-        --shell-fg: #1e293b;
-        --shell-nav-bg: #e8ecf4;
-        --shell-nav-fg: #1e293b;
-        --shell-btn-hover: #eef1f8;
-        --shell-btn-active-bg: color-mix(in oklab, #5a7fff 18%, #fafbfc);
-        --shell-btn-active-fg: #1e293b;
-        --shell-status-fg: #1e293b;
+        @include shell-adaptive-theme(light);
     }
 
     :host([data-theme="dark"]),
     :host-context(html[data-theme="dark"]) {
-        color-scheme: dark;
-        --shell-bg: #0f172a;
-        --shell-fg: #f1f5f9;
-        --shell-nav-bg: #1e293b;
-        --shell-nav-fg: #f1f5f9;
-        --shell-btn-hover: #1e293b;
-        --shell-btn-active-bg: color-mix(in oklab, #7ca7ff 22%, #0f172a);
-        --shell-btn-active-fg: #f1f5f9;
-        --shell-status-fg: #f1f5f9;
+        @include shell-adaptive-theme(dark);
     }
 }
 
@@ -149,27 +138,11 @@
          * Pin readable chrome here — most reliable path inside the shadow tree.
          */
         &[data-theme="light"] {
-            color-scheme: light;
-            --shell-bg: #fafbfc;
-            --shell-fg: #1e293b;
-            --shell-nav-bg: #e8ecf4;
-            --shell-nav-fg: #1e293b;
-            --shell-btn-hover: #eef1f8;
-            --shell-btn-active-bg: color-mix(in oklab, #5a7fff 18%, #fafbfc);
-            --shell-btn-active-fg: #1e293b;
-            --shell-status-fg: #1e293b;
+            @include shell-adaptive-theme(light);
         }
 
         &[data-theme="dark"] {
-            color-scheme: dark;
-            --shell-bg: #0f172a;
-            --shell-fg: #f1f5f9;
-            --shell-nav-bg: #1e293b;
-            --shell-nav-fg: #f1f5f9;
-            --shell-btn-hover: #1e293b;
-            --shell-btn-active-bg: color-mix(in oklab, #7ca7ff 22%, #0f172a);
-            --shell-btn-active-fg: #f1f5f9;
-            --shell-status-fg: #f1f5f9;
+            @include shell-adaptive-theme(dark);
         }
 
         @media print {
@@ -411,44 +384,44 @@
             /* INVARIANT: readable label+icon on light theme (no white-on-white). */
             background-color: var(
                 --shell-btn-active-bg,
-                color-mix(in oklab, #2e3a64 18%, #fafbfc)
+                color-mix(in oklab, var(--color-primary, #5a9ec8) 18%, var(--shell-bg))
             );
-            color: var(--shell-btn-active-fg, #1e293b);
+            color: var(--shell-btn-active-fg);
             /* WHY: was `var(var(...))` — invalid, icons lost ink on active pills. */
-            --icon-color: var(--shell-btn-active-fg, var(--color-on-surface, #1e293b));
+            --icon-color: var(--shell-btn-active-fg);
 
             /*
              * Scope `--icon-color` to `ui-icon` so button label color stays independent.
              */
             ui-icon {
                 opacity: 1;
-                --icon-color: var(--shell-btn-active-fg, var(--color-on-surface, #1e293b));
+                --icon-color: var(--shell-btn-active-fg);
                 color: var(--icon-color);
             }
 
             .app-shell__nav-label {
-                color: var(--shell-btn-active-fg, #1e293b);
+                color: var(--shell-btn-active-fg);
             }
         }
 
-        /* Belt-and-suspenders: light active label stays ink even if token chain drifts. */
+        /* Belt-and-suspenders: active label stays on-surface ink even if token chain drifts. */
         .app-shell[data-theme="light"] &.active,
         :host([data-theme="light"]) &.active,
         :host-context(html[data-theme="light"]) &.active {
-            color: #1e293b;
+            color: --u2-color-mod(var(--base-color, #5a9ec8), 900);
 
             .app-shell__nav-label {
-                color: #1e293b;
+                color: --u2-color-mod(var(--base-color, #5a9ec8), 900);
             }
         }
 
         .app-shell[data-theme="dark"] &.active,
         :host([data-theme="dark"]) &.active,
         :host-context(html[data-theme="dark"]) &.active {
-            color: #f1f5f9;
+            color: --u2-color-mod(var(--base-color, #5a9ec8), 100);
 
             .app-shell__nav-label {
-                color: #f1f5f9;
+                color: --u2-color-mod(var(--base-color, #5a9ec8), 100);
             }
         }
     }
