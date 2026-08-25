@@ -147,6 +147,14 @@
 
         @media print {
             display: contents !important;
+            position: static !important;
+            inset: auto !important;
+            overflow: visible !important;
+            contain: none !important;
+            container-type: normal !important;
+            block-size: auto !important;
+            max-block-size: none !important;
+            min-block-size: 0 !important;
         }
     }
 }
@@ -681,8 +689,82 @@
     }
 
     @media print {
+        /*
+         * WHY: Screen chrome is a viewport clip chain (`contain: strict`, abspos `inset: 0`,
+         * `100dvb` / `100%`). Paint containment + a fixed block-size prints only page 1.
+         * This sheet is adopted on the document and again in the shadow — `:host` covers
+         * the custom element; `html`/`#app`/layer selectors cover the light-DOM ancestors.
+         */
+        :host {
+            display: block !important;
+            position: static !important;
+            inset: auto !important;
+            overflow: visible !important;
+            contain: none !important;
+            container-type: normal !important;
+            content-visibility: visible !important;
+            inline-size: 100% !important;
+            block-size: auto !important;
+            min-block-size: 0 !important;
+            max-block-size: none !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            grid-row: auto !important;
+            grid-column: auto !important;
+            align-self: start !important;
+            justify-self: stretch !important;
+        }
+
+        :is(html, body):has([data-shell="minimal"]),
+        :is(html, body):has(cw-shell-minimal) {
+            position: static !important;
+            inset: auto !important;
+            overflow: visible !important;
+            contain: none !important;
+            container-type: normal !important;
+            content-visibility: visible !important;
+            display: block !important;
+            inline-size: 100% !important;
+            block-size: auto !important;
+            min-block-size: 0 !important;
+            max-block-size: none !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+        }
+
+        :is(html, body):has([data-shell="minimal"]) #app,
+        :is(html, body):has(cw-shell-minimal) #app,
+        :is(html, body):has([data-shell="minimal"]) [data-app-layer-root],
+        :is(html, body):has(cw-shell-minimal) [data-app-layer-root],
+        :is(html, body):has([data-shell="minimal"]) [data-app-layer="shell"],
+        :is(html, body):has(cw-shell-minimal) [data-app-layer="shell"],
+        cw-shell-minimal[data-shell="minimal"] {
+            display: contents !important;
+            position: static !important;
+            inset: auto !important;
+            overflow: visible !important;
+            contain: none !important;
+            container-type: normal !important;
+            content-visibility: visible !important;
+            inline-size: auto !important;
+            block-size: auto !important;
+            min-block-size: 0 !important;
+            max-block-size: none !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+        }
+
+        cw-shell-minimal[data-shell="minimal"] {
+            display: block !important;
+        }
+
         .app-shell__viewport {
             display: contents !important;
+            overflow: visible !important;
+            contain: none !important;
         }
 
         .app-shell__underlying,
@@ -691,8 +773,8 @@
         }
 
         .app-shell__content {
-            overflow: visible;
-            contain: none;
+            overflow: visible !important;
+            contain: none !important;
             display: contents !important;
 
             &::-webkit-scrollbar {
@@ -704,6 +786,7 @@
                 position: static !important;
                 inset: auto !important;
                 overflow: visible !important;
+                contain: none !important;
                 inline-size: auto !important;
                 block-size: auto !important;
                 max-block-size: none !important;
@@ -724,8 +807,12 @@
             overflow: visible !important;
             contain: none !important;
             container-type: normal !important;
+            content-visibility: visible !important;
+            position: static !important;
+            inset: auto !important;
             block-size: auto !important;
             max-block-size: none !important;
+            min-block-size: 0 !important;
         }
 
         .app-shell__nav,
