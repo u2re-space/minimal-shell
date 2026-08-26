@@ -209,9 +209,9 @@
             var(--space-md, 0.75rem)
         );
         margin: 0;
-        background: var(--shell-nav-bg);
-        background-color: var(--shell-nav-bg);
-        border-block-end: 1px solid var(--shell-nav-border);
+        background: var(--sv-surface-2, var(--shell-nav-bg));
+        background-color: var(--sv-surface-2, var(--shell-nav-bg));
+        border-block-end: 0px solid var(--sv-outline-variant-2, var(--shell-nav-border));
         transition:
             background-color var(--motion-normal, 0.2s ease),
             border-color var(--motion-normal, 0.2s ease);
