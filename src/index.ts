@@ -269,10 +269,24 @@ export class MinimalShell extends ShellBase {
             this.rootElement.appendChild(element);
         }
 
+        this.flushShownView(element);
+
         const loading = this.contentContainer.querySelector(".app-shell__loading") as HTMLElement | null;
         if (loading) loading.hidden = true;
 
         this.currentViewElement = element;
+    }
+
+    /** WHY: hidden → shown (or re-slot) can leave adopted CSS empty and skip text paint. */
+    private flushShownView(element: HTMLElement): void {
+        element.style.translate = "0";
+        void element.offsetHeight;
+        requestAnimationFrame(() => {
+            element.style.removeProperty("translate");
+        });
+        void import("@fest-lib/lure").then((m: any) => {
+            m.rehydrateAdoptedStyleSheets?.(element);
+        }).catch(() => { /* stale lure */ });
     }
 
     protected applyTheme(theme: ShellTheme): void {
