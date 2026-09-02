@@ -23,6 +23,22 @@ import type { ShellTheme } from "shared/boot/types";
 import { isEnabledView } from "core/routing/core/views";
 import { SHELL_SLOT } from "boot/shell-slots";
 
+/**
+ * WHY: `preview.js` imports `isEnabledView` from unhashed `boot-index.js`.
+ * A stale assets-cache copy binds `Ot` to the wrong export →
+ * `isEnabledView is not a function` at module init and BootLoader dies.
+ */
+const viewIsEnabled = (viewId: string): boolean => {
+    if (typeof isEnabledView === "function") return isEnabledView(viewId);
+    try {
+        const raw = String(document.documentElement?.dataset?.cwspEnabledViews || "");
+        if (!raw) return true;
+        return raw.split(/[\s,;]+/).filter(Boolean).includes(viewId);
+    } catch {
+        return true;
+    }
+};
+
 // ============================================================================
 // NAVIGATION ITEMS
 // ============================================================================
@@ -45,7 +61,7 @@ const ALL_NAV_ITEMS = [
     { id: "settings", name: "Settings", icon: "gear" },
     { id: "history", name: "History", icon: "clock-counter-clockwise" }
 ] as const satisfies readonly NavItem[];
-const MAIN_NAV_ITEMS = ALL_NAV_ITEMS.filter((item) => isEnabledView(item.id));
+const MAIN_NAV_ITEMS = ALL_NAV_ITEMS.filter((item) => viewIsEnabled(item.id));
 
 /** Set of valid nav view IDs for fast lookup */
 const VALID_NAV_VIEW_IDS = new Set(MAIN_NAV_ITEMS.map(item => item.id));
