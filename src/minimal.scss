@@ -84,6 +84,11 @@
         --shell-nav-bg: var(--color-surface-container-high);
     }
 
+    :host-context(html[data-vk-open]) {
+        overflow: hidden;
+        max-block-size: 100%;
+    }
+
     :host([data-theme="light"]),
     :host-context(html[data-theme="light"]) {
         @include shell-adaptive-theme(light);
@@ -509,7 +514,8 @@
         /* Explicit main surface — avoids transparent flashes vs nav / host during theme-color churn */
         background: var(--shell-bg);
         background-color: var(--shell-bg);
-        overflow: auto;
+        /* INVARIANT: chrome (nav + this box) does not scroll; slotted views own their scrollport. */
+        overflow: hidden;
         scrollbar-width: thin;
         scrollbar-color: var(--shell-scrollbar, rgba(128, 128, 128, 0.3)) transparent;
         box-sizing: border-box;
@@ -536,7 +542,17 @@
             inline-size: stretch;
             block-size: stretch;
             min-inline-size: 0;
-            min-block-size: fit-content;
+            min-block-size: 0;
+            max-block-size: 100%;
+        }
+
+        slot:not([name])::slotted([data-view="viewer"]),
+        slot:not([name])::slotted(cw-view-viewer),
+        slot:not([name])::slotted(.cw-view-viewer-shell),
+        slot:not([name])::slotted(.view-viewer) {
+            overflow: hidden;
+            min-block-size: 0;
+            max-block-size: 100%;
         }
 
         slot:not([name])::slotted([data-view="settings"]),
