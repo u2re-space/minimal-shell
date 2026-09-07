@@ -82,12 +82,14 @@
     :host {
         /* NOTE: inherit veela `--shell-*` defaults; only re-declare minimal host overrides. */
         --shell-nav-bg: var(--color-surface-container-high);
+        max-inline-size: min(var(--lv-width, 100lvi), var(--screen-fit-inline, 100lvi));
+        max-block-size: min(var(--lv-height, 100lvb), var(--screen-fit-block, 100lvb));
     }
 
     /* WHY: IME overlay must not shrink `:host` to the visual viewport (Select All). */
     :host-context(html[data-vk-open]) {
         overflow: hidden;
-        max-block-size: var(--lv-height, 100lvb);
+        max-block-size: min(var(--lv-height, 100lvb), var(--screen-fit-block, 100lvb));
     }
 
     :host([data-theme="light"]),
