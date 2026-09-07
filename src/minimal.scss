@@ -84,9 +84,10 @@
         --shell-nav-bg: var(--color-surface-container-high);
     }
 
+    /* WHY: IME overlay must not shrink `:host` to the visual viewport (Select All). */
     :host-context(html[data-vk-open]) {
         overflow: hidden;
-        max-block-size: 100%;
+        max-block-size: var(--lv-height, 100lvb);
     }
 
     :host([data-theme="light"]),
