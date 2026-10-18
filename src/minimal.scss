@@ -204,7 +204,7 @@
             calc(env(titlebar-area-y, 0px) + env(titlebar-area-height, 0px))
         );
         block-size: auto;
-        padding-block-start: max(env(safe-area-inset-top, 0px), env(titlebar-area-y, 0px));
+        padding-block-start: calc(max(env(safe-area-inset-top, 0px), env(titlebar-area-y, 0px)) + 0.25rem);
         padding-block-end: 0;
         padding-inline-start: max(
             env(safe-area-inset-left, 0px),
