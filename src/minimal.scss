@@ -122,6 +122,9 @@
         justify-content: start;
         gap: 0;
         padding: 0;
+        /* WHY: Capacitor SKUs keep the native Android nav bar visible and transparent over
+           the WebView — reserve its height so the last row is not behind the system bar. */
+        padding-block-end: env(safe-area-inset-bottom, 0px);
         margin: 0;
         inline-size: stretch;
         block-size: stretch;
@@ -188,6 +191,8 @@
     }
 
     .app-shell__nav {
+        --space-md: 0.5rem;
+
         grid-row: shell-nav-row;
         grid-column: 1;
         position: relative;
@@ -209,12 +214,12 @@
         padding-inline-start: max(
             env(safe-area-inset-left, 0px),
             env(titlebar-area-x, 0px),
-            var(--space-md, 0.75rem)
+            var(--space-md, 0.5rem)
         );
         padding-inline-end: max(
             env(safe-area-inset-right, 0px),
             max(0px, calc(100vi - env(titlebar-area-x, 0px) - env(titlebar-area-width, 100vi))),
-            var(--space-md, 0.75rem)
+            var(--space-md, 0.5rem)
         );
         margin: 0;
         background: var(--sv-surface-2, var(--shell-nav-bg));
@@ -352,7 +357,7 @@
         display: flex;
         align-items: center;
         gap: var(--gap-sm, 0.5rem);
-        padding: var(--space-xs, 0.5rem) var(--space-md, 0.75rem);
+        padding: var(--space-xs, 0.5rem) var(--space-md, 0.5rem);
         border: none;
         border-radius: var(--radius-lg, 8px);
         background: transparent;
@@ -605,10 +610,11 @@
 
     .app-shell__status {
         position: fixed;
-        inset-block-end: var(--space-2xl, 1.5rem);
+        /* WHY: fixed to the viewport — lift above the native nav bar slab. */
+        inset-block-end: calc(var(--space-2xl, 1.5rem) + env(safe-area-inset-bottom, 0px));
         inset-inline-start: 50%;
         z-index: 9999;
-        padding: var(--space-md, 0.75rem) var(--space-xl, 1.5rem);
+        padding: var(--space-md, 0.5rem) var(--space-xl, 1.5rem);
         background-color: var(--shell-status-bg);
         color: var(--shell-status-fg);
         border-radius: var(--radius-lg, 8px);
