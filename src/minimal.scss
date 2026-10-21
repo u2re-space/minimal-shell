@@ -13,7 +13,7 @@
     color-scheme: $scheme;
 
     @if $scheme == dark {
-        --shell-bg: var(--color-surface, --u2-color-mod(var(--base-color, #5a9ec8), 940));
+        --shell-bg: var(--color-surface-container-low, --u2-color-mod(var(--base-color, #5a9ec8), 940));
         --shell-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
         --shell-nav-bg: var(--color-surface-container-high, --u2-color-mod(var(--base-color, #5a9ec8), 980));
         --shell-nav-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
@@ -24,7 +24,7 @@
         --shell-status-bg: var(--color-surface-container-low, --u2-color-mod(var(--base-color, #5a9ec8), 940));
         --shell-status-fg: --u2-color-mod(var(--base-color, #5a9ec8), 100);
     } @else {
-        --shell-bg: var(--color-surface, --u2-color-mod(var(--base-color, #5a9ec8), 20));
+        --shell-bg: var(--color-surface-container-low, --u2-color-mod(var(--base-color, #5a9ec8), 20));
         --shell-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
         --shell-nav-bg: var(--color-surface-container-high, --u2-color-mod(var(--base-color, #5a9ec8), 40));
         --shell-nav-fg: --u2-color-mod(var(--base-color, #5a9ec8), 900);
